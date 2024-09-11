@@ -27,6 +27,7 @@ bool GameEngine::checkGuess(const QString &guess) {
     guessCount++;
     if (guess == dailyWord) {
         qDebug() << "Correct guess on attempt:" << guessCount;
+        emit gameWon();
         endGame(true);
         return true;
     }

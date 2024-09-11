@@ -6,6 +6,7 @@ import QtQuick.Layouts 1.14
 Item {
     property int currentRow: 0 //satır kontrol
     property string currentGuess: ""
+    property bool gameActive: true
 
     ListModel {
         id: lettersModel
@@ -156,7 +157,7 @@ Item {
                     item.buttonText = "ENTER";
                     item.buttonClicked.connect(function() {
                     // check the word
-                    if (currentGuess.length === 5) {
+                    if (currentGuess.length === 5 && gameActive) {
                         // dataset check
                         if (fileManager.isWordInWordList(currentGuess)) {
                             console.log("The" + currentGuess + " word is in the dataset");
@@ -172,6 +173,7 @@ Item {
 
                             if (gameEngine.checkGuess(currentGuess)) {
                                 console.log("Daily word was found " + currentGuess);
+                                gameActive = false;
                                 // popups
                             } else {
                                 console.log("but wrong guess");
@@ -222,13 +224,56 @@ Item {
     }
 
 
+    Popup {
+        id: congratsPopup
+        x: parent.width / 2 - width / 2
+        y: parent.height / 2 - height / 2
+        modal: true
+        focus: true
+        width: 300
+        height: 200
+        background: Rectangle {
+            color: "white"
+            radius: 10
+            border.color: "#4CAF50"
+            border.width: 2
+        }
+
+        Column {
+            anchors.centerIn: parent
+            spacing: 20
+
+            Text {
+                text: "Congratulations!"
+                font.pixelSize: 24
+                color: "#4CAF50"
+                horizontalAlignment: Text.AlignHCenter
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
+
+            Text {
+                text: "You guessed the word correctly!"
+                font.pixelSize: 16
+                color: "#333333"
+                horizontalAlignment: Text.AlignHCenter
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
+
+            Button {
+                text: "OK"
+                anchors.horizontalCenter: parent.horizontalCenter
+                onClicked: congratsPopup.close()
+            }
+        }
+    }
 
     // GameEngine'in sinyallerine bağlanma
     Connections {
         target: gameEngine
         onGameWon: {
             console.log("Congratulations, you won!");
-            // Kazanma popupları
+            congratsPopup.open();
+            gameActive = false;
         }
         onGameOver: {
             console.log("Unfortunately, the game has ended.");
