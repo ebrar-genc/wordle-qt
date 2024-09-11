@@ -1,5 +1,6 @@
 import QtQuick 2.14
 import QtQuick.Controls 2.14
+import QtQuick.Layouts 1.14
 
 ApplicationWindow {
     visible: true
@@ -8,43 +9,41 @@ ApplicationWindow {
     title: "WordleGamee"
     color: "#EDEDED"
 
-    /*Loader {
+    Loader {
         id: screenLoader
         anchors.fill: parent
         visible: false
         onLoaded: {
         visible = true
         }
-    }*/
+    }
 
-
-    Loader {
+    /*Loader {
         id: screenLoader
         anchors.fill: parent
         visible: true
         source: "GameScreen.qml"
-    }
-
+    }*/
 
     Item {
         id: mainContent
         anchors.fill: parent
-        visible: false//***
+        visible: true//***
 
         Column {
             anchors.centerIn: parent
-            spacing: 20
+            spacing: 15
 
             Image {
                 source: "qrc:/Icons/Wordle_icon.png"
-                width: 100
-                height: 100
+                width: 130
+                height: 130
                 anchors.horizontalCenter: parent.horizontalCenter //yatayda merkezle
             }
 
             Text {
                      text: "Wordle"
-                     font.pixelSize: 48
+                     font.pixelSize: 60
                      font.family: "Serif"
                      font.weight: Font.Black
                      horizontalAlignment: Text.AlignHCenter
@@ -54,35 +53,105 @@ ApplicationWindow {
 
             Text {
                 text: "Get 6 chances to guess\na 5-letter word."
-                font.pixelSize: 30
+                font.pixelSize: 45
                 font.family: "Helvetica"
                 font.weight: Font.Light
                 horizontalAlignment: Text.AlignHCenter
                 anchors.horizontalCenter: parent.horizontalCenter
+                padding: 30
             }
 
+            Rectangle {
+                height: 30
+                width: 1
+                color: "transparent"
+            }
+
+            // Dil Seçimi
+            RowLayout {
+                spacing: 5
+                anchors.horizontalCenter: parent.horizontalCenter
+
+                Text {
+                    text: "Select Language:"
+                    font.pixelSize: 12
+                    color: "#333333"
+                    Layout.alignment: Qt.AlignVCenter
+                }
+
+                RadioButton {
+                    id: enButton
+                    text: "English"
+                    checked: true
+                    onClicked: gameEngine.setLanguage("en")
+                    font.pixelSize: 10
+                }
+
+                RadioButton {
+                    id: trButton
+                    text: "Turkish"
+                    onClicked: gameEngine.setLanguage("tr")
+                    font.pixelSize: 10
+                }
+            }
+
+            // Oyun Modu Seçimi
+            RowLayout {
+                spacing: 10
+                anchors.horizontalCenter: parent.horizontalCenter
+
+                Text {
+                    text: "Game Mode:"
+                    font.pixelSize: 12
+                    color: "#333333"
+                    Layout.alignment: Qt.AlignVCenter
+                }
+
+                RadioButton {
+                    id: limitedButton
+                    text: "Limited"
+                    checked: true
+                    onClicked: gameEngine.setUnlimitedPlay(false)
+                    font.pixelSize: 10
+                }
+
+                RadioButton {
+                    id: unlimitedButton
+                    text: "Unlimited"
+                    onClicked: gameEngine.setUnlimitedPlay(true)
+                    font.pixelSize: 10
+                }
+            }
+
+            // Play Butonu, Dil ve Mod seçilmeden aktif olmayacak
             Button {
                 width: 150
                 height: 50
                 anchors.horizontalCenter: parent.horizontalCenter
                 background: Rectangle {
-                color: "black"
-                radius: 35
+                    color: "black"
+                    radius: 35
                 }
+                enabled: (enButton.checked || trButton.checked) && (limitedButton.checked || unlimitedButton.checked)
                 onClicked: {
-                    mainContent.visible = false // Ana içeriği gizle
+                    mainContent.visible = false
                     gameEngine.startGame()
-                    screenLoader.source = "GameScreen.qml" // Oyun ekranını yüklendi
+                    screenLoader.source = "GameScreen.qml"
                 }
                 contentItem: Text {
                     text: "Play"
                     font.pixelSize: 15
                     color: "white"
-                    horizontalAlignment: Text.AlignHCenter // Yatay hizalamayı ortalar
-                    verticalAlignment: Text.AlignVCenter // Dikey hizalamayı ortalar
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
                 }
             }
 
+            Rectangle {
+                height: 135
+                width: 1
+                color: "transparent"
+            }
 
             Label {
                 text: Qt.formatDate(new Date(), "MMMM d, yyyy") // güncel tarih
@@ -91,6 +160,7 @@ ApplicationWindow {
 
             Label {
                 text: "Edited by egenc"
+                font.pixelSize: 11
                 anchors.horizontalCenter: parent.horizontalCenter
             }
 

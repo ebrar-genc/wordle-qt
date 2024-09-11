@@ -10,5 +10,6 @@
         <file>Icons/exit_white.png</file>
         <file>HeaderIcons.qml</file>
         <file>HowToPlay.qml</file>
+        <file alias="5-letter-words-en.txt">Dataset/5-letter-words-en.txt</file>
     </qresource>
 </RCC>

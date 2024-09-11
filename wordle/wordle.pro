@@ -27,3 +27,5 @@ HEADERS += \
     gameengine.h \
     mainwindow.h \
     popups.h
+
+DISTFILES += Dataset/5-letter-words-en.txt
