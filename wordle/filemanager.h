@@ -17,11 +17,13 @@ public:
     void setWordListFilePath(const QString &path);
     void setupDailyWord();
 
+    QString getDailyWord() const;
 private:
     QString dailyWordFilePath;
     QString wordListFilePath;
-    QString language;
-    QString mode;
+    QString Language;
+    QString Mode;
+    QString DailyWord;
 
     QString getRandomWordFromTxt();
     bool isWordUsed(const QString &word);

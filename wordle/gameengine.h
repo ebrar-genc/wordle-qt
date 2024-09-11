@@ -5,19 +5,21 @@
 #include <QDebug>
 #include <QString>
 #include "filemanager.h"
+
 class GameEngine : public QObject
 {
     Q_OBJECT
 public:
-    explicit GameEngine(QObject *parent = nullptr);
+    explicit GameEngine(QObject *parent = nullptr, FileManager *fileManager = nullptr);
 
     Q_INVOKABLE void startGame(); // QML'den çağrılabilir fonksiyon
 
-signals:
-    void gameStarted();
+    QString getDailyWord() const;
+
 
 private:
-    FileManager fileManager;
+    QString dailyWord;
+    FileManager *fileManager;
 };
 
 #endif // GAMEENGINE_H

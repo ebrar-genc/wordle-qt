@@ -19,21 +19,21 @@ QString FileManager::getGameMode() const {
 }
 */
 void FileManager::setLanguage(const QString &lang) {
-    language = lang;
+    Language = lang;
     updateFilePath(); // Dosya yollarını güncelle
-    qDebug() << "Language set to:" << language;
+    qDebug() << "Language set to:" << Language;
 }
 
 void FileManager::setGameMode(const QString &gameMode) {
-    mode = gameMode;
-    qDebug() << "Game mode set to:" << mode;
+    Mode = gameMode;
+    qDebug() << "Game mode set to:" << Mode;
     setupDailyWord(); // Yeni günlük kelimeyi ayarla
     //mode işlemleri
 }
 
 // Dosya yollarını dil seçimine göre günceller
 void FileManager::updateFilePath() {
-    if (language == "tr") {
+    if (Language == "tr") {
         dailyWordFilePath = "C:\\Users\\gence\\Documents\\GitHub\\wordle-qt\\wordle\\Dataset\\daily-word-tr.txt"; // Yerel dosya yolu
         wordListFilePath = "C:\\Users\\gence\\Documents\\GitHub\\wordle-qt\\wordle\\Dataset\\5-letter-words-tr.txt"; // Yerel dosya yolu
     } else {
@@ -50,7 +50,7 @@ void FileManager::setupDailyWord() {
 
     if (!isWordUsed(dailyWord)) {
         addUsedWord(dailyWord);
-        qDebug() << "Today's word set in" << language << ":" << dailyWord;
+        qDebug() << "Today's word set in" << Language << ":" << dailyWord;
     }
 }
 
@@ -91,7 +91,7 @@ bool FileManager::isWordUsed(const QString &word) {
 }
 
 // Kullanılmış kelimeyi kaydeder
-void FileManager::addUsedWord(const QString &word) {
+void FileManager::addUsedWord(const QString &dailyWord) {
     QFile file(dailyWordFilePath);
     if (!file.open(QIODevice::Append | QIODevice::Text)) {
         qWarning() << "Daily word file could not be opened for appending!";
@@ -99,6 +99,11 @@ void FileManager::addUsedWord(const QString &word) {
     }
 
     QTextStream out(&file);
-    out << word << "\n";
+    out << dailyWord << "\n";
+    DailyWord = dailyWord;
     file.close();
+}
+
+QString FileManager::getDailyWord() const {
+    return DailyWord;
 }

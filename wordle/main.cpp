@@ -10,8 +10,9 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
-    GameEngine gameEngine;
     FileManager fileManager;
+    GameEngine gameEngine(nullptr, &fileManager);
+
 
     // QML'e C++ objeleri bağlandı
     engine.rootContext()->setContextProperty("gameEngine", &gameEngine);
