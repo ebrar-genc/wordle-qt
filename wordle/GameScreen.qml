@@ -6,11 +6,10 @@ import QtQuick.Layouts 1.14
 Item {
     property int currentRow: 0 //satır kontrol
     property string currentGuess: ""
-    property var dataset: ["HELLO", "WORLD", "QTQUI"]
 
-   ListModel {
-       id: lettersModel
-   }
+    ListModel {
+        id: lettersModel
+    }
 
     Rectangle {
         width: parent.width
@@ -156,15 +155,25 @@ Item {
                     item.width = 82;
                     item.buttonText = "ENTER";
                     item.buttonClicked.connect(function() {
-                        // Kelimeyi kontrol et
                         if (currentGuess.length === 5) {
-                            if (dataset.includes(currentGuess)) {
-                                console.log("Kelime doğru: " + currentGuess);
-                                currentRow++; // sonraki satıra
-                                currentGuess = ""; // kelimeyi sıfırla
+                            // Dataset kontrolü
+                            if (fileManager.isWordInWordList(currentGuess)) {
+                                console.log("Kelime datasette mevcut " + currentGuess);
+
+                                // Daily word kontrolü
+                                if (currentGuess === gameEngine.getDailyWord()) {
+                                    console.log("Daily word doğru tahmin edildi: " + currentGuess);
+                                    // Kazanma işlemleri
+                                } else {
+                                    console.log("Daily word yanlış: " + currentGuess);
+                                    // Diğer işlemler
+                                }
+
+                                currentRow++;
+                                currentGuess = "";
                             } else {
-                                console.log("Kelime yanlış: " + currentGuess);
-                                //..
+                                console.log("Kelime yanlış veya dataset'te yok: " + currentGuess);
+                                // Kullanıcıya geri bildirim ver
                             }
                         }
                     });

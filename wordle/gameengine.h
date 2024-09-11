@@ -13,8 +13,8 @@ public:
     explicit GameEngine(QObject *parent = nullptr, FileManager *fileManager = nullptr);
 
     Q_INVOKABLE void startGame(); // QML'den çağrılabilir fonksiyon
+    Q_INVOKABLE QString getDailyWord() const;
 
-    QString getDailyWord() const;
 
 
 private:

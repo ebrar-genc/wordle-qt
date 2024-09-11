@@ -107,3 +107,25 @@ void FileManager::addUsedWord(const QString &dailyWord) {
 QString FileManager::getDailyWord() const {
     return DailyWord;
 }
+
+// inputun kelime listesinde olup olmadığını kontrol eden fonksiyon
+bool FileManager::isWordInWordList(const QString &inputWord) {
+    QFile file(wordListFilePath);
+
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qWarning() << "Word list file could not be opened!";
+        return false;
+    }
+
+    QTextStream in(&file);
+    while (!in.atEnd()) {
+        QString line = in.readLine().trimmed();
+        if (line.compare(inputWord, Qt::CaseInsensitive) == 0) {
+            file.close();
+            return true;
+        }
+    }
+
+    file.close();
+    return false;
+}
