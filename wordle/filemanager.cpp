@@ -7,13 +7,41 @@
 #include <QStandardPaths>
 
 FileManager::FileManager(QObject *parent)
-    : QObject(parent), m_language("en") {
-    updateFilePath();
+    : QObject(parent){
 }
 
-void FileManager::setWordListFilePath(const QString &path) {
-    wordListFilePath = path;
-    qDebug() << "Word list file path set to:" << wordListFilePath;
+/*QString FileManager::getLanguage() const {
+    return language;
+}
+
+QString FileManager::getGameMode() const {
+    return mode;
+}
+*/
+void FileManager::setLanguage(const QString &lang) {
+    language = lang;
+    updateFilePath(); // Dosya yollarını güncelle
+    qDebug() << "Language set to:" << language;
+}
+
+void FileManager::setGameMode(const QString &gameMode) {
+    mode = gameMode;
+    qDebug() << "Game mode set to:" << mode;
+    setupDailyWord(); // Yeni günlük kelimeyi ayarla
+    //mode işlemleri
+}
+
+// Dosya yollarını dil seçimine göre günceller
+void FileManager::updateFilePath() {
+    if (language == "tr") {
+        dailyWordFilePath = "C:\\Users\\gence\\Documents\\GitHub\\wordle-qt\\wordle\\Dataset\\daily-word-tr.txt"; // Yerel dosya yolu
+        wordListFilePath = "C:\\Users\\gence\\Documents\\GitHub\\wordle-qt\\wordle\\Dataset\\5-letter-words-tr.txt"; // Yerel dosya yolu
+    } else {
+        dailyWordFilePath = "C:\\Users\\gence\\Documents\\GitHub\\wordle-qt\\wordle\\Dataset\\daily-word-en.txt"; // Yerel dosya yolu
+        wordListFilePath = "C:\\Users\\gence\\Documents\\GitHub\\wordle-qt\\wordle\\Dataset\\5-letter-words-en.txt"; // Yerel dosya yolu
+    }
+    qDebug() << "Word List file path: " << wordListFilePath;
+    qDebug() << "Daily word file path: " << dailyWordFilePath;
 }
 
 // Günlük kelimeyi ayarlar
@@ -22,56 +50,29 @@ void FileManager::setupDailyWord() {
 
     if (!isWordUsed(dailyWord)) {
         addUsedWord(dailyWord);
-        qDebug() << "Today's word set in" << m_language << ":" << dailyWord;
+        qDebug() << "Today's word set in" << language << ":" << dailyWord;
     }
 }
 
-// Dil ayarları için getter ve setter
-QString FileManager::language() const {
-    return m_language;
-}
 
-void FileManager::setLanguage(const QString &lang) {
-    if (m_language != lang) {
-        m_language = lang;
-        updateFilePath(); // Dosya yolunu günceller
-        setupDailyWord(); // Yeni günlük kelimeyi ayarla
-    }
-    qDebug() << "Language set to:" << m_language;
-    setupDailyWord();
-}
-
-// Dosya yollarını dil seçimine göre günceller
-void FileManager::updateFilePath() {
-    QString localPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
-    QDir().mkpath(localPath); // Dizin yoksa oluştur
-
-    if (m_language == "tr") {
-        dailyWordFilePath = "C:\\Users\\gence\\Documents\\GitHub\\wordle-qt\\wordle\\Dataset\\daily-word-tr.txt"; // Yerel dosya yolu
-        wordListFilePath = "C:\\Users\\gence\\Documents\\GitHub\\wordle-qt\\wordle\\Dataset\\5-letter-words-tr.txt"; // Yerel dosya yolu
-    } else {
-        dailyWordFilePath = "C:\\Users\\gence\\Documents\\GitHub\\wordle-qt\\wordle\\Dataset\\daily-word-en.txt"; // Yerel dosya yolu
-        wordListFilePath = "C:\\Users\\gence\\Documents\\GitHub\\wordle-qt\\wordle\\Dataset\\5-letter-words-en.txt"; // Yerel dosya yolu
-    }
-
-    qDebug() << "File paths updated: " << dailyWordFilePath << " and " << wordListFilePath;
-}
 // Rastgele kelime seçer
 QString FileManager::getRandomWordFromTxt() {
     QFile file(wordListFilePath);
 
-    // Dosyayı açma işlemi
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qWarning() << "Word list file could not be opened!";
         return "";
     }
 
-    // Tüm kelimeleri oku ve rastgele birini seç
     QStringList wordList = QTextStream(&file).readAll().split('\n', Qt::SkipEmptyParts);
     file.close();
 
-    int randomIndex = QRandomGenerator::global()->bounded(wordList.size());
-    return wordList.at(randomIndex).trimmed();
+    if (wordList.isEmpty()) {
+        qWarning() << "Word list is empty!";
+        return "";
+    }
+
+    return wordList.at(QRandomGenerator::global()->bounded(wordList.size())).trimmed();
 }
 
 // Kelimenin daha önce kullanılıp kullanılmadığını kontrol eder
@@ -81,7 +82,7 @@ bool FileManager::isWordUsed(const QString &word) {
     while (!in.atEnd()) {
         if (in.readLine() == word) {
             file.close();
-            return true; // Kelime daha önce kullanılmış
+            return true;
         }
     }
 

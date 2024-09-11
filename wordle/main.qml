@@ -82,14 +82,14 @@ ApplicationWindow {
                 RadioButton {
                     id: enButton
                     text: "English"
-                    onClicked: fileManager.setLanguage = "en"
+                    onClicked: fileManager.setLanguage("en")
                     font.pixelSize: 12
                 }
 
                 RadioButton {
                     id: trButton
                     text: "Turkish"
-                    onClicked: fileManager.setLanguage = "tr"
+                    onClicked: fileManager.setLanguage("tr")
                     font.pixelSize: 12
                 }
             }
@@ -109,14 +109,14 @@ ApplicationWindow {
                 RadioButton {
                     id: limitedButton
                     text: "Limited"
-                    onClicked: fileManager.setGameMode = "limited"
+                    onClicked: fileManager.setGameMode("limited")
                     font.pixelSize: 12
                 }
 
                 RadioButton {
                     id: unlimitedButton
                     text: "Unlimited"
-                    onClicked: fileManager.setGameMode = "unlimited"
+                    onClicked: fileManager.setGameMode("unlimited")
                     font.pixelSize: 12
                 }
             }

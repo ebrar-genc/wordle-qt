@@ -11,16 +11,17 @@ class FileManager : public QObject
 public:
     explicit FileManager(QObject *parent = nullptr);
 
-    QString language() const;
-    void setLanguage(const QString &lang);
-    void setWordListFilePath(const QString &path);
+    Q_INVOKABLE void setLanguage(const QString &lang); // QML'den çağrılabilir hale getirildi
+    Q_INVOKABLE void setGameMode(const QString &gameMode); // QML'den çağrılabilir hale getirildi
 
+    void setWordListFilePath(const QString &path);
     void setupDailyWord();
 
 private:
     QString dailyWordFilePath;
     QString wordListFilePath;
-    QString m_language;
+    QString language;
+    QString mode;
 
     QString getRandomWordFromTxt();
     bool isWordUsed(const QString &word);
