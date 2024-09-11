@@ -45,3 +45,35 @@ void GameEngine::endGame(bool won) {
         emit gameOver();
     }
 }
+
+//dailyword ile karşılaştırarak renk bilgisi dönme
+QVariantList GameEngine::compareGuess(const QString &guess) {
+    QVariantList result;
+
+    //tekrar eden harfleri belirlemek için
+    QVector<bool> dailyUsed(5, false);
+
+    // doğru pozisyon kontrol
+    for (int i = 0; i < 5; ++i) {
+        if (guess[i] == dailyWord[i]) {
+            result.append("green");
+            dailyUsed[i] = true;
+        } else {
+            result.append("grey");
+        }
+    }
+
+    // diğer pozisyonlar kontrol
+    for (int i = 0; i < 5; ++i) {
+        if (result[i] == "grey") { // Daha önce doğru pozisyon olarak işaretlenmemişse
+            for (int j = 0; j < 5; ++j) {
+                if (!dailyUsed[j] && guess[i] == dailyWord[j]) {
+                    result[i] = "yellow";
+                    dailyUsed[j] = true;
+                    break;
+                }
+            }
+        }
+    }
+    return result;
+}

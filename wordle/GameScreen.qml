@@ -159,7 +159,16 @@ Item {
                     if (currentGuess.length === 5) {
                         // dataset check
                         if (fileManager.isWordInWordList(currentGuess)) {
-                            console.log("The word is in the dataset" + currentGuess);
+                            console.log("The" + currentGuess + " word is in the dataset");
+
+                            // renk sonucunu al
+                            var comparisonResult = gameEngine.compareGuess(currentGuess);
+
+                            // Tahtadaki hücrelerin renklerini güncelle
+                            for (var i = 0; i < comparisonResult.length; i++) {
+                                var color = comparisonResult[i];
+                                gameBoard.children[currentRow * 5 + i].color = color;
+                            }
 
                             if (gameEngine.checkGuess(currentGuess)) {
                                 console.log("Daily word was found " + currentGuess);

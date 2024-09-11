@@ -16,6 +16,7 @@ public:
     Q_INVOKABLE void startGame();
     Q_INVOKABLE QString getDailyWord() const;
     Q_INVOKABLE bool checkGuess(const QString &guess);
+    Q_INVOKABLE QVariantList compareGuess(const QString &guess); //renk bilgisi
 
 signals:
     void gameWon();
