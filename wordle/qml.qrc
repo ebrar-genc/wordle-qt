@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>GameScreen.qml</file>
+        <file>Icons/Wordle_icon.png</file>
+        <file>Icons/clue.png</file>
+        <file>Icons/analytics.png</file>
+        <file>Icons/question-mark.png</file>
+        <file>Icons/settings.png</file>
+        <file>Icons/exit_white.png</file>
+        <file>HeaderIcons.qml</file>
+        <file>HowToPlay.qml</file>
+    </qresource>
+</RCC>
