@@ -155,28 +155,28 @@ Item {
                     item.width = 82;
                     item.buttonText = "ENTER";
                     item.buttonClicked.connect(function() {
-                        if (currentGuess.length === 5) {
-                            // Dataset kontrolü
-                            if (fileManager.isWordInWordList(currentGuess)) {
-                                console.log("Kelime datasette mevcut " + currentGuess);
+                    // check the word
+                    if (currentGuess.length === 5) {
+                        // dataset check
+                        if (fileManager.isWordInWordList(currentGuess)) {
+                            console.log("The word is in the dataset" + currentGuess);
 
-                                // Daily word kontrolü
-                                if (currentGuess === gameEngine.getDailyWord()) {
-                                    console.log("Daily word doğru tahmin edildi: " + currentGuess);
-                                    // Kazanma işlemleri
-                                } else {
-                                    console.log("Daily word yanlış: " + currentGuess);
-                                    // Diğer işlemler
-                                }
-
-                                currentRow++;
-                                currentGuess = "";
+                            if (gameEngine.checkGuess(currentGuess)) {
+                                console.log("Daily word was found " + currentGuess);
+                                // popups
                             } else {
-                                console.log("Kelime yanlış veya dataset'te yok: " + currentGuess);
-                                // Kullanıcıya geri bildirim ver
+                                console.log("but wrong guess");
+                                // popups
                             }
+
+                            currentRow++;
+                            currentGuess = "";
+                        } else {
+                            console.log("The word is not in the dataset " + currentGuess + " Try again!");
+                            // popups
                         }
-                    });
+                    }
+                });
                     item.children[1].font.pixelSize = 16;
                 }
             }
@@ -213,5 +213,17 @@ Item {
     }
 
 
+
+    // GameEngine'in sinyallerine bağlanma
+    Connections {
+        target: gameEngine
+        onGameWon: {
+            console.log("Congratulations, you won!");
+            // Kazanma popupları
+        }
+        onGameOver: {
+            console.log("Unfortunately, the game has ended.");
+        }
+    }
 
 }

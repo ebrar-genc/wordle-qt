@@ -12,14 +12,22 @@ class GameEngine : public QObject
 public:
     explicit GameEngine(QObject *parent = nullptr, FileManager *fileManager = nullptr);
 
-    Q_INVOKABLE void startGame(); // QML'den çağrılabilir fonksiyon
+     // QML'den çağrılabilir fonksiyonlar
+    Q_INVOKABLE void startGame();
     Q_INVOKABLE QString getDailyWord() const;
+    Q_INVOKABLE bool checkGuess(const QString &guess);
 
-
+signals:
+    void gameWon();
+    void gameOver();
 
 private:
     QString dailyWord;
     FileManager *fileManager;
+    int guessCount;
+
+    void endGame(bool won);
+
 };
 
 #endif // GAMEENGINE_H

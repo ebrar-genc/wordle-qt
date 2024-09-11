@@ -22,3 +22,26 @@ void GameEngine::startGame() {
 QString GameEngine::getDailyWord() const {
     return dailyWord;
 }
+
+bool GameEngine::checkGuess(const QString &guess) {
+    guessCount++;
+    if (guess == dailyWord) {
+        qDebug() << "Correct guess on attempt:" << guessCount;
+        endGame(true);
+        return true;
+    }
+
+    if (guessCount >= 6) {
+        qDebug() << "All attempts used, game over.";
+        endGame(false);
+    }
+    return false;
+}
+
+void GameEngine::endGame(bool won) {
+    if (won) {
+        emit gameWon();
+    } else {
+        emit gameOver();
+    }
+}
