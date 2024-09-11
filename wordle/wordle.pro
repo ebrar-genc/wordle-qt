@@ -5,9 +5,9 @@ QT += quick widgets
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+        filemanager.cpp \
         gameengine.cpp \
         main.cpp \
-        mainwindow.cpp \
         popups.cpp
 
 RESOURCES += qml.qrc
@@ -24,8 +24,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
+    filemanager.h \
     gameengine.h \
-    mainwindow.h \
     popups.h
 
-DISTFILES += Dataset/5-letter-words-en.txt
+DISTFILES += Dataset/5-letter-words-en.txt Dataset/5-letter-words-tr.txt Dataset/daily-word-tr.txt Dataset/daily-word-en.txt

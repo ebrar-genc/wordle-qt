@@ -11,5 +11,8 @@
         <file>HeaderIcons.qml</file>
         <file>HowToPlay.qml</file>
         <file alias="5-letter-words-en.txt">Dataset/5-letter-words-en.txt</file>
-    </qresource>
+        <file alias="5-letter-words-tr.txt">Dataset/5-letter-words-tr.txt</file>
+        <file alias="daily-word-tr.txt">Dataset/daily-word-tr.txt</file>
+        <file alias="daily-word-en.txt">Dataset/daily-word-en.txt</file>
+</qresource>
 </RCC>

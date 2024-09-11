@@ -82,16 +82,15 @@ ApplicationWindow {
                 RadioButton {
                     id: enButton
                     text: "English"
-                    checked: true
-                    onClicked: gameEngine.setLanguage("en")
-                    font.pixelSize: 10
+                    onClicked: fileManager.setLanguage = "en"
+                    font.pixelSize: 12
                 }
 
                 RadioButton {
                     id: trButton
                     text: "Turkish"
-                    onClicked: gameEngine.setLanguage("tr")
-                    font.pixelSize: 10
+                    onClicked: fileManager.setLanguage = "tr"
+                    font.pixelSize: 12
                 }
             }
 
@@ -110,16 +109,15 @@ ApplicationWindow {
                 RadioButton {
                     id: limitedButton
                     text: "Limited"
-                    checked: true
-                    onClicked: gameEngine.setUnlimitedPlay(false)
-                    font.pixelSize: 10
+                    onClicked: fileManager.setGameMode = "limited"
+                    font.pixelSize: 12
                 }
 
                 RadioButton {
                     id: unlimitedButton
                     text: "Unlimited"
-                    onClicked: gameEngine.setUnlimitedPlay(true)
-                    font.pixelSize: 10
+                    onClicked: fileManager.setGameMode = "unlimited"
+                    font.pixelSize: 12
                 }
             }
 

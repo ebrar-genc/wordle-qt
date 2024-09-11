@@ -2,6 +2,8 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include "gameengine.h"
+#include "filemanager.h"
+
 
 int main(int argc, char *argv[])
 {
@@ -9,9 +11,11 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
     GameEngine gameEngine;
+    FileManager fileManager;
 
-    // QML'e C++ objesi bağlandı
+    // QML'e C++ objeleri bağlandı
     engine.rootContext()->setContextProperty("gameEngine", &gameEngine);
+    engine.rootContext()->setContextProperty("fileManager", &fileManager);
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
