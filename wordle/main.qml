@@ -6,7 +6,7 @@ ApplicationWindow {
     visible: true
     width: 1300
     height: 900
-    title: "WordleGamee"
+    title: "WordleGame"
     color: "#EDEDED"
 
     Loader {
