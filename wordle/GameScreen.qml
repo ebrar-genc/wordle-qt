@@ -4,6 +4,13 @@ import QtQuick.Layouts 1.14
 
 
 Item {
+    property int currentRow: 0 //satır kontrol
+    property string currentGuess: ""
+    property var dataset: ["HELLO", "WORLD", "QTQUI"]
+
+   ListModel {
+       id: lettersModel
+   }
 
     Rectangle {
         width: parent.width
@@ -49,16 +56,16 @@ Item {
                 border.width: 2
 
                 Text {
-                    text: "" //harfler burada görünecek
-                    font.pixelSize: 20
-                    color: "white"
-                    anchors.centerIn: parent
-                }
+                   text: model.index < lettersModel.count ? lettersModel.get(model.index).letter : ""
+                   font.pixelSize: 20
+                   color: "white"
+                   anchors.centerIn: parent
+               }
             }
         }
     }
 
-    // Sanal Klavye Ortak Buton Bileşeni komponent tanımı
+    // Sanal Klavye komponenti
     Component {
         id: keybooardButton
         Rectangle {
@@ -110,7 +117,10 @@ Item {
                     onLoaded: {
                         item.buttonText = modelData;
                         item.buttonClicked.connect(function(key) {
-                            // Tuş işlemleri buradaa
+                            if (currentGuess.length < 5) {
+                                currentGuess += key; //geçerli kelimeyi güncelle
+                                lettersModel.append({"letter": key}); // harfi modele ekle
+                            }
                         });
                     }
                 }
@@ -127,7 +137,10 @@ Item {
                     onLoaded: {
                         item.buttonText = modelData;
                         item.buttonClicked.connect(function(key) {
-                            //tuş işlemleri
+                            if (currentGuess.length < 5) {
+                                currentGuess += key;
+                                lettersModel.append({"letter": key});
+                            }
                         });
                     }
                 }
@@ -142,8 +155,18 @@ Item {
                 onLoaded: {
                     item.width = 82;
                     item.buttonText = "ENTER";
-                    item.buttonClicked.connect(function(key) {
-                        // Enter işlemi
+                    item.buttonClicked.connect(function() {
+                        // Kelimeyi kontrol et
+                        if (currentGuess.length === 5) {
+                            if (dataset.includes(currentGuess)) {
+                                console.log("Kelime doğru: " + currentGuess);
+                                currentRow++; // sonraki satıra
+                                currentGuess = ""; // kelimeyi sıfırla
+                            } else {
+                                console.log("Kelime yanlış: " + currentGuess);
+                                //..
+                            }
+                        }
                     });
                     item.children[1].font.pixelSize = 16;
                 }
@@ -155,7 +178,10 @@ Item {
                     onLoaded: {
                         item.buttonText = modelData;
                         item.buttonClicked.connect(function(key) {
-                            // Tuş işlemleri burada
+                            if (currentGuess.length < 5) {
+                                currentGuess += key;
+                                lettersModel.append({"letter": key});
+                            }
                         });
                     }
                 }
@@ -165,8 +191,11 @@ Item {
                 onLoaded: {
                     item.width = 81;
                     item.buttonText = "\u232B"; // Backspace
-                    item.buttonClicked.connect(function(key) {
-                        // Geri silme işlemi
+                    item.buttonClicked.connect(function() {
+                        if (currentGuess.length > 0) {
+                            currentGuess = currentGuess.slice(0, -1); // Son harfi sil
+                            lettersModel.remove(lettersModel.count - 1);
+                        }
                     });
                     item.children[1].font.pixelSize = 19;
                 }

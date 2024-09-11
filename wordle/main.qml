@@ -8,19 +8,28 @@ ApplicationWindow {
     title: "WordleGamee"
     color: "#EDEDED"
 
-    Loader {
+    /*Loader {
         id: screenLoader
         anchors.fill: parent
         visible: false
         onLoaded: {
         visible = true
         }
+    }*/
+
+
+    Loader {
+        id: screenLoader
+        anchors.fill: parent
+        visible: true
+        source: "GameScreen.qml"
     }
+
 
     Item {
         id: mainContent
         anchors.fill: parent
-        visible: true
+        visible: false//***
 
         Column {
             anchors.centerIn: parent
